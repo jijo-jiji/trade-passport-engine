@@ -1,7 +1,8 @@
 {
   "builds": [
     { "src": "api/index.py", "use": "@vercel/python" },
-    { "src": "frontend/**/*.php", "use": "vercel-php@0.6.2" }
+    { "src": "frontend/**/*.php", "use": "vercel-php@0.6.2" },
+    { "src": "frontend/example_docs/*.jpg", "use": "@vercel/static" }
   ],
   "rewrites": [
     {
