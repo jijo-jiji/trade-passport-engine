@@ -30,21 +30,21 @@ The following diagram illustrates how eCredit Bridge bridges the gap between sup
 
 ```mermaid
 graph TD
-    subgraph Supplier System (ERP/SaaS)
+    subgraph "Supplier System (ERP/SaaS)"
         A[eCredit Bridge SPA] -->|ERP API Sync| B[Supplier Ledger Database]
     end
     
-    subgraph Government Registry
+    subgraph "Government Registry"
         C[LHDN e-Invoice API Registry]
     end
     
-    subgraph eCredit Bridge Core Backend
+    subgraph "eCredit Bridge Core Backend"
         D[Python Flask Risk Scoring Engine] -->|API Registry Validation| C
         A -->|Request Client Rating| D
         D -->|Calculates Credit Score 1000pts| A
     end
     
-    subgraph Institutional Financier
+    subgraph "Institutional Financier"
         E[CapBay Funding Portal]
         A -->|PDPA Consent & Bundle Routing| E
         E -->|Direct Disbursal of Funds| B
