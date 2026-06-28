@@ -1728,18 +1728,22 @@ function evaluateTradePassport() {
   const loadedState = document.getElementById('loaded-state');
   const loadingText = document.getElementById('loading-text');
   
+  const company = db[activeCompanyId];
+  const client = company.clients[activeClientId];
+  
   loadingState.classList.remove('hidden');
   loadedState.classList.add('hidden');
   
-  // Simulate API delay text sequence
+  // Simulate API delay text sequence with actual LHDN SDK endpoints
   const sequence = [
-    "Verifying E-Delivery Orders...",
-    "Matching Bank Reconciliations...",
-    "Retrieving LHDN e-Invoice UUIDs...",
-    "Executing Risk Scoring Engine..."
+    "POST /connect/token ➔ Authenticating taxpayer client credentials...",
+    `GET /api/v1.0/taxpayer/validate/${client ? (client.tin || 'C2584563222') : 'C2584563222'} ➔ Validating buyer TIN registry...`,
+    "GET /api/v1.0/documents/recent ➔ Pulling recent B2B LHDN e-Invoices...",
+    "GET /api/v1.0/documents/details ➔ Reconciling validation hashes & DO terms...",
+    "Executing CreditBridge Algorithmic Risk Triage..."
   ];
   let seqIndex = 0;
-  loadingText.textContent = "Connecting to CreditBridge API...";
+  loadingText.textContent = "Initializing ERP e-Invoice Sync...";
   
   const intervalId = setInterval(() => {
     if (seqIndex < sequence.length) {
@@ -1750,10 +1754,7 @@ function evaluateTradePassport() {
         seqIndex++;
       }, 150);
     }
-  }, 650);
-
-  const company = db[activeCompanyId];
-  const client = company.clients[activeClientId];
+  }, 750);
   
   if (!client) {
     clearInterval(intervalId);
